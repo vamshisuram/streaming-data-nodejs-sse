@@ -8,6 +8,19 @@
             const data = JSON.parse(event.data);
             document.body.innerHTML += `<p>${data.time}</p>`;
         };
+
+        source.onerror = function(event) {
+            console.error('EventSource failed:', event);
+            if (source.readyState === EventSource.CLOSED) {
+                
+                console.log('Connection was closed, trying to reconnect...');
+        
+                // Reconnect after 5 seconds
+                setTimeout(() => {
+                    source = new EventSource('http://localhost:3000/stream');
+                }, 5000);
+            }
+        };
     </script>
 </body>
 </html>
