@@ -9,10 +9,16 @@ app.get('/stream', (req, res) => {
     res.flushHeaders();
 
     // Send data every 5 seconds
-    setInterval(() => {
+    const intervalId = setInterval(() => {
         const data = { time: new Date().toISOString() };
         res.write(`data: ${JSON.stringify(data)}\n\n`);
     }, 5000);
+
+    req.on('close', () => {
+        clearInterval(intervalId);
+        res.end();
+        console.log('Client disconnected');
+    });
 });
 
 app.listen(3000, () => {
