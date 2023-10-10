@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <script>
+        const source = new EventSource('http://localhost:3000/stream');
+
+        source.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            document.body.innerHTML += `<p>${data.time}</p>`;
+        };
+    </script>
+</body>
+</html>
